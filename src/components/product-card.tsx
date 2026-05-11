@@ -37,6 +37,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
     : null;
 
   const imageSrc = firstColor.image;
+  const hoverImageSrc = product.images[1] && hasRealImage(product.images[1]) ? product.images[1] : null;
   const showImage = hasRealImage(imageSrc);
 
   return (
@@ -54,13 +55,29 @@ export function ProductCard({ product, className }: ProductCardProps) {
               </span>
             )}
             {showImage ? (
-              <Image
-                src={imageSrc}
-                alt={`${product.name} - ${firstColor.name}`}
-                width={800}
-                height={800}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-              />
+              <>
+                <Image
+                  src={imageSrc}
+                  alt={`${product.name} - ${firstColor.name}`}
+                  width={800}
+                  height={800}
+                  className={cn(
+                    "w-full h-full object-cover transition-all duration-500",
+                    hoverImageSrc
+                      ? "group-hover:opacity-0 group-hover:scale-105"
+                      : "group-hover:scale-105"
+                  )}
+                />
+                {hoverImageSrc && (
+                  <Image
+                    src={hoverImageSrc}
+                    alt={`${product.name} - ${firstColor.name} alternate view`}
+                    width={800}
+                    height={800}
+                    className="absolute inset-0 w-full h-full object-cover opacity-0 scale-105 group-hover:opacity-100 transition-all duration-500"
+                  />
+                )}
+              </>
             ) : (
               <div
                 className="w-full h-full flex items-center justify-center transition-transform duration-500 group-hover:scale-105"
